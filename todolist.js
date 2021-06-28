@@ -1,48 +1,29 @@
+const express = require("express");
+const todo = require("./routes/todo");
+const http = require("http");
+const cors = require("cors");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const methodOverride = require("method-override");
+const errorHandler = require("errorhandler");
+const app = express();
 
-/**
- * Module dependencies.
- */
+app.set("port", process.env.PORT || 3000);
+app.use(cors({ origin: "*" }));
+app.use(morgan("dev"));
+app.use(bodyParser.json());
+app.use(methodOverride());
 
-var express = require('express')
-  , routes = require('./routes')
-  , todo = require('./routes/todo')
-  , http = require('http')
-  , path = require('path');
+app.use(errorHandler());
 
-var cors = require('cors');
+app.get("/api/todos", todo.findAll);
+app.post("/api/todos", todo.addTodo);
 
-var app = express();
+app.delete("/api/todos/:id", todo.deleteTodo);
 
+// app.put('/api/todos/:id', todo.updateTodo);
+// app.get('/api/todos/:id', todo.findById);
 
-
-app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/public');
-  app.engine('.html', require('ejs').renderFile);
-  app.set('view engine', 'html');
-app.use(cors());
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
-});
-
-app.configure('development', function(){
-  app.use(express.errorHandler());
-});
-
-app.get('/views/:name', routes.views);
-
-app.get('/api/todos', todo.findAll);
-app.get('/api/todos/:id', todo.findById);
-app.post('/api/todos', todo.addTodo);
-
-app.put('/api/todos/:id', todo.updateTodo);
-app.delete('/api/todos/:id', todo.deleteTodo);
-
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+http.createServer(app).listen(app.get("port"), function () {
+  console.log("Express server listening on port " + app.get("port"));
 });
