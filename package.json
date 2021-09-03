@@ -6,7 +6,6 @@
     "start": "nodemon todolist"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
     "cors": "^2.5.3",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
