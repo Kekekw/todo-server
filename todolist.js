@@ -18,7 +18,7 @@ app.get("/api/todos", todo.findAll);
 app.post("/api/todos", todo.addTodo);
 app.delete("/api/todos/:id", todo.deleteTodo);
 // app.put('/api/todos/:id', todo.updateTodo);
-// app.get('/api/todos/:isd', todo.findById);
+// app.get('/api/todos/:id', todo.findById);
 
 http.createServer(app).listen(app.get("port"), function () {
   console.log("Express server listening on port " + app.get("port"));
